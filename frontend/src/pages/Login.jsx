@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axiosInstance from '../api/axios';
 import { useNavigate } from 'react-router-dom';
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -25,26 +26,49 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {error && <p>{error}</p>}
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <Container maxWidth="xs">
+      <Box mt={5}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Login
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          {error && <Typography color="error">{error}</Typography>}
+          <TextField
+            fullWidth
+            label="Email"
+            variant="outlined"
+            margin="normal"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}  // Update email state
+          />
+          <TextField
+            fullWidth
+            label="Password"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}  // Update password state
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            type="submit"
+            sx={{ mt: 2 }}
+          >
+            Login
+          </Button>
+        </form>
+        <Box mt={2} textAlign="center">
+          <Typography variant="body2">
+            Don't have an account? <a href="/register">Register here</a>
+          </Typography>
+        </Box>
+      </Box>
+    </Container>
   );
 };
 
 export default Login;
+
