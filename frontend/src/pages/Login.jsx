@@ -14,16 +14,23 @@ const Login = () => {
     try {
       const response = await axiosInstance.post('/auth/login', { email, password });
       
-      // Save JWT token and username to localStorage
-      localStorage.setItem('authToken', response.data.token);
-      localStorage.setItem('username', response.data.username);  // Assuming response contains username
-      
+      // Check if username exists in the response
+      if (response.data && response.data.username) {
+        // Save JWT token and username to localStorage
+        localStorage.setItem('authToken', response.data.token);
+        localStorage.setItem('username', response.data.username);  
+      } else {
+        console.error('Username not found in response');
+        setError('Failed to retrieve username');
+      }
+  
       // Redirect to home page
       navigate('/home');
     } catch (error) {
       setError('Invalid credentials');
     }
   };
+  
 
   return (
     <Container maxWidth="xs">
@@ -33,6 +40,8 @@ const Login = () => {
         </Typography>
         <form onSubmit={handleSubmit}>
           {error && <Typography color="error">{error}</Typography>}
+          
+          {/* Email input field */}
           <TextField
             fullWidth
             label="Email"
@@ -41,6 +50,8 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}  // Update email state
           />
+          
+          {/* Password input field */}
           <TextField
             fullWidth
             label="Password"
@@ -50,6 +61,8 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}  // Update password state
           />
+          
+          {/* Login button */}
           <Button
             fullWidth
             variant="contained"
@@ -60,6 +73,7 @@ const Login = () => {
             Login
           </Button>
         </form>
+        
         <Box mt={2} textAlign="center">
           <Typography variant="body2">
             Don't have an account? <a href="/register">Register here</a>
@@ -71,4 +85,3 @@ const Login = () => {
 };
 
 export default Login;
-

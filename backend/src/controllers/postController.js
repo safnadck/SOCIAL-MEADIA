@@ -12,9 +12,9 @@ export const getPosts = (req, res) => {
 
 // Create a new post
 export const createPost = (req, res) => {
-  const { userId, content, image } = req.body;
+  const { userid, content, image } = req.body;
 
-  PostModel.create(userId, content, image, (err, result) => {
+  PostModel.create(userid, content, image, (err, result) => {
     if (err) {
       return res.status(500).json({ message: 'Error creating post' });
     }

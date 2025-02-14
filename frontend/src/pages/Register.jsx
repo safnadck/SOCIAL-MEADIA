@@ -1,52 +1,85 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null); // Reset error state before request
     try {
-      await axios.post('http://localhost:5000/api/auth/register', { username, email, password });
+      await axios.post('http://localhost:5002/api/auth/register', { username, email, password });
       navigate('/login');
-    } catch (error) {
-      console.error('Registration failed', error);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed'); // Handle errors better
+      console.error('Registration failed:', err);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto mt-8 p-4 border rounded-md">
-      <h2 className="text-xl font-semibold mb-4">Register</h2>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className="w-full p-2 border rounded-md"
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full p-2 border rounded-md"
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="w-full p-2 border rounded-md"
-        required
-      />
-      <button type="submit" className="bg-blue-500 text-white p-2 rounded-md w-full">Register</button>
-    </form>
+    <Container maxWidth="xs">
+      <Box mt={5}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Register
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          {error && (
+            <Typography color="error" sx={{ textAlign: 'center', mb: 2 }}>
+              {error}
+            </Typography>
+          )}
+          <TextField
+            fullWidth
+            label="Username"
+            variant="outlined"
+            margin="normal"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <TextField
+            fullWidth
+            label="Email"
+            type="email"
+            variant="outlined"
+            margin="normal"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <TextField
+            fullWidth
+            label="Password"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            type="submit"
+            sx={{ mt: 2 }}
+          >
+            Register
+          </Button>
+        </form>
+        <Box mt={2} textAlign="center">
+          <Typography variant="body2">
+            Already have an account? <Link to="/login">Login here</Link>
+          </Typography>
+        </Box>
+      </Box>
+    </Container>
   );
 };
 

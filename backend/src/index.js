@@ -8,13 +8,13 @@ import commentRoutes from './routes/commentRoutes.js'; // Make sure this is impo
 dotenv.config();
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:5174' }));
+app.use(cors({ origin: 'http://localhost:5176' }));
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);  // Register comment routes
 
-app.listen(5000, () => {
-  console.log('Server is running on port 5000');
+app.listen(5002, () => {
+  console.log('Server is running on port 5002');
 });

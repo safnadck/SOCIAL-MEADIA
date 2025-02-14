@@ -13,10 +13,10 @@ const Profile = () => {
       try {
         // Replace with actual logged-in user info
         const userId = 1;
-        const userResponse = await axios.get(`http://localhost:5000/api/users/${user_id}`);
+        const userResponse = await axios.get(`http://localhost:5001/api/users/${user_id}`);
         setUser(userResponse.data);
 
-        const userPostsResponse = await axios.get(`http://localhost:5000/api/posts/user/${user_id}`);
+        const userPostsResponse = await axios.get(`http://localhost:5001/api/posts/user/${user_id}`);
         setPosts(userPostsResponse.data);
       } catch (err) {
         setError('Failed to load profile or posts. Please try again later.');

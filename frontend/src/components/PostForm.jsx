@@ -7,20 +7,38 @@ const PostForm = ({ onPostCreated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Create a new FormData object to handle form submission
     const formData = new FormData();
     formData.append('content', content);
     if (image) formData.append('image', image);
 
+    // Debugging: Log the form data
+    console.log('Form Data:', formData);
+
     try {
       const token = localStorage.getItem('authToken');
-      const response = await axios.post('http://localhost:5000/api/posts', formData, {
-        headers: { Authorization: `Bearer ${token}` },
+      const userId = localStorage.getItem('userId');  // Assuming userId is stored in localStorage
+
+      // Append userId to formData
+      formData.append('userId', userId);
+
+      // Send POST request to create a post
+      const response = await axios.post('http://localhost:5002/api/posts', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+
+      // Handle success response: notify the parent component of the new post
       onPostCreated(response.data);
+      
+      // Clear the form fields
       setContent('');
       setImage(null);
     } catch (error) {
-      console.error('Error creating post:', error);
+      // Log detailed error message for debugging
+      console.error('Error creating post:', error.response ? error.response.data : error.message);
     }
   };
 
@@ -40,7 +58,9 @@ const PostForm = ({ onPostCreated }) => {
         onChange={(e) => setImage(e.target.files[0])}
         className="w-full p-2 border rounded-md"
       />
-      <button type="submit" className="bg-blue-500 text-white p-2 rounded-md w-full">Post</button>
+      <button type="submit" className="bg-blue-500 text-white p-2 rounded-md w-full">
+        Post
+      </button>
     </form>
   );
 };

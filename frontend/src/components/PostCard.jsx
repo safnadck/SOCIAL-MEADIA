@@ -11,11 +11,11 @@ const PostCard = ({ post, onLike }) => {
         <span className="font-bold">{post.username}</span>
         <span className="text-gray-500">{new Date(post.created_at).toLocaleString()}</span>
       </div>
-      <p className="mt-2">{post.content}</p>
+      <p className="mt-2 bg-red-200 text-black font-bold text-xl p-10 w-3/3 text-center rounded-lg shadow-lg">{post.content}</p>
       {post.image && <img src={post.image} alt="post" className="w-full mt-2 rounded-lg" />}
       <div className="flex justify-between items-center mt-3">
         <button onClick={onLike} className="bg-blue-500 text-white px-4 py-2 rounded-md">
-          {post.likes} Like{post.likes > 1 ? 's' : ''}
+          {post.likes} Like{post.likes > 1 ? 's' : '10'}
         </button>
         <button
           onClick={() => setShowComments((prev) => !prev)}
